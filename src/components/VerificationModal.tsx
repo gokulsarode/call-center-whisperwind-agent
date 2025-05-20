@@ -25,7 +25,6 @@ const VerificationModal: React.FC<VerificationModalProps> = ({ isOpen, onClose, 
         toast({
           title: 'Verification Successful',
           description: 'Customer verification completed successfully.',
-          icon: <ShieldCheck className="h-4 w-4 text-green-500" />
         });
         updateValidation('verification', true);
       } else {
@@ -33,7 +32,6 @@ const VerificationModal: React.FC<VerificationModalProps> = ({ isOpen, onClose, 
           title: 'Verification Failed',
           description: 'The answer provided is incorrect.',
           variant: 'destructive',
-          icon: <ShieldX className="h-4 w-4" />
         });
         updateValidation('verification', false);
       }
