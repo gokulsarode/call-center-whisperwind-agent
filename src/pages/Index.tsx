@@ -52,12 +52,10 @@ const CallDetailsContent: React.FC<{
   activeTab: 'verification' | 'rmn'; 
   onValidateClick: () => void;
 }> = ({ activeTab, onValidateClick }) => {
-  const { showCustomerDetails } = useCallValidation();
-  
   return (
     <>
       <CallDetails onValidateClick={onValidateClick} activeTab={activeTab} />
-      {showCustomerDetails && activeTab === 'verification' && <CustomerDetails />}
+      <CustomerDetails />
       <CallWrapUp />
     </>
   );

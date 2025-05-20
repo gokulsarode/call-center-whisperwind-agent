@@ -4,7 +4,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
-import { X } from 'lucide-react';
+import { X, ShieldCheck, ShieldX } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 import { useCallValidation } from '@/hooks/useCallValidation';
 
@@ -25,13 +25,15 @@ const VerificationModal: React.FC<VerificationModalProps> = ({ isOpen, onClose, 
         toast({
           title: 'Verification Successful',
           description: 'Customer verification completed successfully.',
+          icon: <ShieldCheck className="h-4 w-4 text-green-500" />
         });
         updateValidation('verification', true);
       } else {
         toast({
           title: 'Verification Failed',
           description: 'The answer provided is incorrect.',
-          variant: 'destructive'
+          variant: 'destructive',
+          icon: <ShieldX className="h-4 w-4" />
         });
         updateValidation('verification', false);
       }
@@ -62,7 +64,7 @@ const VerificationModal: React.FC<VerificationModalProps> = ({ isOpen, onClose, 
         {type === 'verification' ? (
           <>
             <div className="mt-4">
-              <h3 className="text-lg font-medium text-blue-700 mb-4">What is the customer maiden name?</h3>
+              <h3 className="text-lg font-medium text-blue-700 mb-4">What is the customer's maiden name?</h3>
               
               <RadioGroup value={selectedOption || ''} onValueChange={setSelectedOption}>
                 <div className="grid grid-cols-2 gap-4">

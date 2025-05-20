@@ -10,7 +10,6 @@ interface ValidationState {
 interface CallValidationContextType {
   validationState: ValidationState;
   updateValidation: (type: 'rmn' | 'verification', value: boolean) => void;
-  showCustomerDetails: boolean;
 }
 
 const CallValidationContext = createContext<CallValidationContextType | undefined>(undefined);
@@ -22,36 +21,28 @@ export const CallValidationProvider: React.FC<{ children: React.ReactNode }> = (
     overallVerification: false
   });
   
-  const [showCustomerDetails, setShowCustomerDetails] = useState(false);
-  
   const updateValidation = (type: 'rmn' | 'verification', value: boolean) => {
     if (type === 'rmn') {
       setValidationState(prev => ({
         ...prev,
         rmnVerification: value,
-        // Overall verification is true only if both RMN and IVR are verified
+        // Overall validation status follows the table logic
         overallVerification: value && prev.ivrVerification
       }));
     } else if (type === 'verification') {
-      // For verification flow, set the overall verification directly
+      // For verification flow, set based on the value
       setValidationState(prev => ({
         ...prev,
         rmnVerification: true, // In verification flow, RMN is considered verified
         overallVerification: value
       }));
-      
-      // If verification was successful, show customer details
-      if (value) {
-        setShowCustomerDetails(true);
-      }
     }
   };
   
   return (
     <CallValidationContext.Provider value={{ 
       validationState, 
-      updateValidation,
-      showCustomerDetails
+      updateValidation
     }}>
       {children}
     </CallValidationContext.Provider>
