@@ -2,9 +2,6 @@
 import React, { useState } from 'react';
 import { 
   ChevronDown,
-  Dialpad, 
-  Hold, 
-  Transfer, 
   X, 
   PhoneCall
 } from 'lucide-react';
@@ -53,13 +50,13 @@ const Header: React.FC = () => {
           </DropdownMenuTrigger>
           <DropdownMenuContent>
             <DropdownMenuItem>
-              <Dialpad className="mr-2 h-4 w-4" /> Dialpad
+              <span className="mr-2 flex items-center justify-center w-4 h-4">D</span> Dialpad
             </DropdownMenuItem>
             <DropdownMenuItem>
-              <Hold className="mr-2 h-4 w-4" /> Hold
+              <span className="mr-2 flex items-center justify-center w-4 h-4">H</span> Hold
             </DropdownMenuItem>
             <DropdownMenuItem>
-              <Transfer className="mr-2 h-4 w-4" /> Transfer
+              <span className="mr-2 flex items-center justify-center w-4 h-4">T</span> Transfer
             </DropdownMenuItem>
             <DropdownMenuItem>
               <X className="mr-2 h-4 w-4" /> Disconnect

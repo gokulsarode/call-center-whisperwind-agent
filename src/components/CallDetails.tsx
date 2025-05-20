@@ -2,7 +2,6 @@
 import React from 'react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { Dialpad } from 'lucide-react';
 import { useCallValidation } from '@/hooks/useCallValidation';
 
 interface CallDetailsProps {
@@ -92,7 +91,7 @@ const CallDetails: React.FC<CallDetailsProps> = ({ onValidateClick, activeTab })
             Validate
           </Button>
           <Button variant="outline" className="flex items-center gap-2">
-            <Dialpad className="h-4 w-4" /> Dialpad
+            <span className="flex items-center justify-center w-4 h-4">D</span> Dialpad
           </Button>
         </div>
         
