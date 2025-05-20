@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -24,6 +25,12 @@ export default {
 				ring: 'hsl(var(--ring))',
 				background: 'hsl(var(--background))',
 				foreground: 'hsl(var(--foreground))',
+				callHeader: 'hsl(var(--call-header))',
+				callHeaderText: 'hsl(var(--call-header-text))',
+				sectionHeader: 'hsl(var(--call-section-header))',
+				sectionHeaderText: 'hsl(var(--call-section-header-text))',
+				validationNo: 'hsl(var(--validation-no))',
+				validationYes: 'hsl(var(--validation-yes))',
 				primary: {
 					DEFAULT: 'hsl(var(--primary))',
 					foreground: 'hsl(var(--primary-foreground))'
@@ -62,6 +69,16 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				}
+			},
+			backgroundColor: {
+				'call-header': 'hsl(var(--call-header))',
+				'section-header': 'hsl(var(--call-section-header))',
+			},
+			textColor: {
+				'call-header-text': 'hsl(var(--call-header-text))',
+				'section-header-text': 'hsl(var(--call-section-header-text))',
+				'validation-no': 'hsl(var(--validation-no))',
+				'validation-yes': 'hsl(var(--validation-yes))',
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
