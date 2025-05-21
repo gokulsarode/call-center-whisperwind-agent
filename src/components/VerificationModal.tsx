@@ -4,7 +4,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
-import { X, ShieldCheck, ShieldX } from 'lucide-react';
+import { X } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 import { useCallValidation } from '@/hooks/useCallValidation';
 
@@ -20,28 +20,19 @@ const VerificationModal: React.FC<VerificationModalProps> = ({ isOpen, onClose, 
   const { updateValidation } = useCallValidation();
   
   const handleSubmit = () => {
-    if (type === 'verification') {
-      if (selectedOption === '123') {
-        toast({
-          title: 'Verification Successful',
-          description: 'Customer verification completed successfully.',
-        });
-        updateValidation('verification', true);
-      } else {
-        toast({
-          title: 'Verification Failed',
-          description: 'The answer provided is incorrect.',
-          variant: 'destructive',
-        });
-        updateValidation('verification', false);
-      }
-    } else if (type === 'rmn') {
+    if (selectedOption === '123') {
       toast({
-        title: 'RMN Validation',
-        description: 'Please request customer to call from RMN.',
-        variant: 'destructive'
+        title: 'Verification Successful',
+        description: 'Customer verification completed successfully.',
       });
-      updateValidation('rmn', false);
+      updateValidation(type, true);
+    } else {
+      toast({
+        title: 'Verification Failed',
+        description: 'The answer provided is incorrect.',
+        variant: 'destructive',
+      });
+      updateValidation(type, false);
     }
     
     onClose();
@@ -59,51 +50,37 @@ const VerificationModal: React.FC<VerificationModalProps> = ({ isOpen, onClose, 
           </div>
         </DialogHeader>
         
-        {type === 'verification' ? (
-          <>
-            <div className="mt-4">
-              <h3 className="text-lg font-medium text-blue-700 mb-4">What is the customer's maiden name?</h3>
-              
-              <RadioGroup value={selectedOption || ''} onValueChange={setSelectedOption}>
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="ABC" id="ABC" />
-                    <Label htmlFor="ABC">ABC</Label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="XYZ" id="XYZ" />
-                    <Label htmlFor="XYZ">XYZ</Label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="123" id="123" />
-                    <Label htmlFor="123">123</Label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="RMN" id="RMN" />
-                    <Label htmlFor="RMN">RMN</Label>
-                  </div>
-                </div>
-              </RadioGroup>
+        <div className="mt-4">
+          <h3 className="text-lg font-medium text-blue-700 mb-4">What is the customer's maiden name?</h3>
+          
+          <RadioGroup value={selectedOption || ''} onValueChange={setSelectedOption}>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="ABC" id="ABC" />
+                <Label htmlFor="ABC">ABC</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="XYZ" id="XYZ" />
+                <Label htmlFor="XYZ">XYZ</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="123" id="123" />
+                <Label htmlFor="123">123</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="RMN" id="RMN" />
+                <Label htmlFor="RMN">RMN</Label>
+              </div>
             </div>
-            
-            <Button 
-              onClick={handleSubmit} 
-              className="w-full mt-4 bg-blue-400 hover:bg-blue-500 text-white"
-            >
-              Submit
-            </Button>
-          </>
-        ) : (
-          <div className="py-6">
-            <p className="text-center text-lg">Please request customer to call from RMN.</p>
-            <Button 
-              onClick={handleSubmit} 
-              className="w-full mt-6 bg-blue-400 hover:bg-blue-500 text-white"
-            >
-              OK
-            </Button>
-          </div>
-        )}
+          </RadioGroup>
+        </div>
+        
+        <Button 
+          onClick={handleSubmit} 
+          className="w-full mt-4 bg-blue-400 hover:bg-blue-500 text-white"
+        >
+          Submit
+        </Button>
       </DialogContent>
     </Dialog>
   );

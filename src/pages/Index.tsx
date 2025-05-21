@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from '@/components/Header';
 import CallDetails from '@/components/CallDetails';
 import CallWrapUp from '@/components/CallWrapUp';
@@ -12,7 +12,11 @@ const CallCenterPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'verification' | 'rmn'>('verification');
   const [isModalOpen, setIsModalOpen] = useState(false);
   
+  // Show verification modal when switching to 'rmn' (No & No Scenario) tab
   const handleTabChange = (tab: 'verification' | 'rmn') => {
+    if (tab === 'rmn') {
+      setIsModalOpen(true);
+    }
     setActiveTab(tab);
   };
   

@@ -5,7 +5,7 @@ interface ValidationState {
   rmnVerification: boolean;
   ivrVerification: boolean;
   overallVerification: boolean;
-  verification: boolean; // Adding this property to fix the TypeScript error
+  verification: boolean;
 }
 
 interface CallValidationContextType {
@@ -29,7 +29,8 @@ export const CallValidationProvider: React.FC<{ children: React.ReactNode }> = (
         ...prev,
         rmnVerification: value,
         // Overall validation status follows the table logic
-        overallVerification: value && prev.ivrVerification
+        overallVerification: value,
+        verification: false // For No & No Scenario tab
       }));
     } else if (type === 'verification') {
       // For verification flow, set based on the value
