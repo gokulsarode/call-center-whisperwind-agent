@@ -25,20 +25,20 @@ export const CallValidationProvider: React.FC<{ children: React.ReactNode }> = (
   
   const updateValidation = (type: 'rmn' | 'verification', value: boolean) => {
     if (type === 'rmn') {
+      // For No & No Scenario tab
       setValidationState(prev => ({
         ...prev,
         rmnVerification: value,
-        // Overall validation status follows the table logic
         overallVerification: value,
-        verification: false // For No & No Scenario tab
+        verification: false // No & No Scenario
       }));
     } else if (type === 'verification') {
-      // For verification flow, set based on the value
+      // For Multiple Scenario tab, validation status should always be Yes
       setValidationState(prev => ({
         ...prev,
-        rmnVerification: true, // In verification flow, RMN is considered verified
-        overallVerification: value,
-        verification: value
+        rmnVerification: value,
+        overallVerification: true, // Always true for Multiple Scenario
+        verification: true // Always true for Multiple Scenario
       }));
     }
   };

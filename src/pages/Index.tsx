@@ -11,16 +11,25 @@ import { CallValidationProvider, useCallValidation } from '@/hooks/useCallValida
 const CallCenterPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'verification' | 'rmn'>('verification');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalType, setModalType] = useState<'verification' | 'rmn' | 'validate-rmn'>('verification');
   
   // Show verification modal when switching to 'rmn' (No & No Scenario) tab
   const handleTabChange = (tab: 'verification' | 'rmn') => {
     if (tab === 'rmn') {
+      setModalType('rmn');
       setIsModalOpen(true);
     }
     setActiveTab(tab);
   };
   
   const handleValidateClick = () => {
+    if (activeTab === 'rmn') {
+      // For No & No Scenario, show RMN validation popup
+      setModalType('validate-rmn');
+    } else {
+      // For Multiple Scenario, show regular verification popup
+      setModalType('verification');
+    }
     setIsModalOpen(true);
   };
   
@@ -45,7 +54,7 @@ const CallCenterPage: React.FC = () => {
         <VerificationModal 
           isOpen={isModalOpen} 
           onClose={closeModal} 
-          type={activeTab} 
+          type={modalType} 
         />
       </div>
     </div>

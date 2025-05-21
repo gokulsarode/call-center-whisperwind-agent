@@ -11,7 +11,7 @@ import { useCallValidation } from '@/hooks/useCallValidation';
 interface VerificationModalProps {
   isOpen: boolean;
   onClose: () => void;
-  type: 'verification' | 'rmn';
+  type: 'verification' | 'rmn' | 'validate-rmn';
 }
 
 const VerificationModal: React.FC<VerificationModalProps> = ({ isOpen, onClose, type }) => {
@@ -20,19 +20,30 @@ const VerificationModal: React.FC<VerificationModalProps> = ({ isOpen, onClose, 
   const { updateValidation } = useCallValidation();
   
   const handleSubmit = () => {
+    if (type === 'validate-rmn') {
+      // For the RMN validation popup from validate button
+      toast({
+        title: 'RMN Validation Required',
+        description: 'Please request customer to call from RMN.',
+      });
+      onClose();
+      return;
+    }
+    
+    // For regular verification flow
     if (selectedOption === '123') {
       toast({
         title: 'Verification Successful',
         description: 'Customer verification completed successfully.',
       });
-      updateValidation(type, true);
+      updateValidation(type === 'rmn' ? 'rmn' : 'verification', true);
     } else {
       toast({
         title: 'Verification Failed',
         description: 'The answer provided is incorrect.',
         variant: 'destructive',
       });
-      updateValidation(type, false);
+      updateValidation(type === 'rmn' ? 'rmn' : 'verification', false);
     }
     
     onClose();
@@ -43,7 +54,9 @@ const VerificationModal: React.FC<VerificationModalProps> = ({ isOpen, onClose, 
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <div className="flex items-center justify-between">
-            <DialogTitle className="text-xl">Verification Engine</DialogTitle>
+            <DialogTitle className="text-xl">
+              {type === 'validate-rmn' ? 'RMN Validation' : 'Verification Engine'}
+            </DialogTitle>
             <Button variant="ghost" onClick={onClose} className="-mt-2">
               <X className="h-4 w-4" />
             </Button>
@@ -51,35 +64,43 @@ const VerificationModal: React.FC<VerificationModalProps> = ({ isOpen, onClose, 
         </DialogHeader>
         
         <div className="mt-4">
-          <h3 className="text-lg font-medium text-blue-700 mb-4">What is the customer's maiden name?</h3>
-          
-          <RadioGroup value={selectedOption || ''} onValueChange={setSelectedOption}>
-            <div className="grid grid-cols-2 gap-4">
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="ABC" id="ABC" />
-                <Label htmlFor="ABC">ABC</Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="XYZ" id="XYZ" />
-                <Label htmlFor="XYZ">XYZ</Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="123" id="123" />
-                <Label htmlFor="123">123</Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="RMN" id="RMN" />
-                <Label htmlFor="RMN">RMN</Label>
-              </div>
-            </div>
-          </RadioGroup>
+          {type === 'validate-rmn' ? (
+            <h3 className="text-lg font-medium text-blue-700 mb-4">
+              Please request customer to call from RMN.
+            </h3>
+          ) : (
+            <>
+              <h3 className="text-lg font-medium text-blue-700 mb-4">What is the customer's maiden name?</h3>
+              
+              <RadioGroup value={selectedOption || ''} onValueChange={setSelectedOption}>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="ABC" id="ABC" />
+                    <Label htmlFor="ABC">ABC</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="XYZ" id="XYZ" />
+                    <Label htmlFor="XYZ">XYZ</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="123" id="123" />
+                    <Label htmlFor="123">123</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="RMN" id="RMN" />
+                    <Label htmlFor="RMN">RMN</Label>
+                  </div>
+                </div>
+              </RadioGroup>
+            </>
+          )}
         </div>
         
         <Button 
           onClick={handleSubmit} 
           className="w-full mt-4 bg-blue-400 hover:bg-blue-500 text-white"
         >
-          Submit
+          {type === 'validate-rmn' ? 'Acknowledge' : 'Submit'}
         </Button>
       </DialogContent>
     </Dialog>
