@@ -5,7 +5,11 @@ import { useCallValidation } from '@/hooks/useCallValidation';
 import { Eye, EyeOff } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
-const CustomerDetails: React.FC = () => {
+interface CustomerDetailsProps {
+  activeTab: 'verification' | 'rmn';
+}
+
+const CustomerDetails: React.FC<CustomerDetailsProps> = ({ activeTab }) => {
   const { validationState } = useCallValidation();
   const isVerified = validationState.overallVerification;
   const [showMaskedDetails, setShowMaskedDetails] = React.useState(false);
@@ -14,9 +18,9 @@ const CustomerDetails: React.FC = () => {
     setShowMaskedDetails(prev => !prev);
   };
   
-  // Helper function to mask data
+  // Helper function to mask data based on tab and validation status
   const maskData = (data: string) => {
-    if (isVerified || showMaskedDetails) {
+    if (activeTab === 'verification' || isVerified || showMaskedDetails) {
       return data;
     }
     return "****";
@@ -26,7 +30,7 @@ const CustomerDetails: React.FC = () => {
     <div className="bg-white p-6 border rounded-md mb-6">
       <div className="bg-section-header text-section-header-text p-3 mb-4 flex justify-between items-center">
         <h2 className="text-lg font-semibold">Customer Details</h2>
-        {!isVerified && (
+        {activeTab === 'rmn' && !isVerified && (
           <Button 
             variant="ghost" 
             size="sm" 

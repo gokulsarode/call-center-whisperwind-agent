@@ -5,6 +5,7 @@ interface ValidationState {
   rmnVerification: boolean;
   ivrVerification: boolean;
   overallVerification: boolean;
+  verification: boolean; // Adding this property to fix the TypeScript error
 }
 
 interface CallValidationContextType {
@@ -18,7 +19,8 @@ export const CallValidationProvider: React.FC<{ children: React.ReactNode }> = (
   const [validationState, setValidationState] = useState<ValidationState>({
     rmnVerification: false,
     ivrVerification: true, // IVR is always verified as per requirements
-    overallVerification: false
+    overallVerification: false,
+    verification: true, // This will make Multiple Scenario always show Yes for validation
   });
   
   const updateValidation = (type: 'rmn' | 'verification', value: boolean) => {
@@ -34,7 +36,8 @@ export const CallValidationProvider: React.FC<{ children: React.ReactNode }> = (
       setValidationState(prev => ({
         ...prev,
         rmnVerification: true, // In verification flow, RMN is considered verified
-        overallVerification: value
+        overallVerification: value,
+        verification: value
       }));
     }
   };

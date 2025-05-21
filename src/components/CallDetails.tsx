@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
@@ -15,9 +14,7 @@ const CallDetails: React.FC<CallDetailsProps> = ({ onValidateClick, activeTab })
   const [ivrStatus, setIvrStatus] = useState('Yes');
   
   // Get validation status based on active tab
-  const validationStatus = activeTab === 'verification' 
-    ? (validationState.verification ? 'Yes' : 'No')
-    : 'No';
+  const validationStatus = activeTab === 'verification' ? 'Yes' : 'No';
   
   return (
     <div className="bg-white p-6 border rounded-md mb-6">
