@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Header from '@/components/Header';
 import CallDetails from '@/components/CallDetails';
 import CallWrapUp from '@/components/CallWrapUp';
@@ -7,11 +7,12 @@ import VerificationModal from '@/components/VerificationModal';
 import TabsNavigation from '@/components/TabsNavigation';
 import CustomerDetails from '@/components/CustomerDetails';
 import { CallValidationProvider, useCallValidation } from '@/hooks/useCallValidation';
+import { ProductSelectionProvider } from '@/hooks/useProductSelection';
 
 const CallCenterPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'verification' | 'rmn'>('verification');
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalType, setModalType] = useState<'verification' | 'rmn' | 'validate-rmn'>('verification');
+  const [modalType, setModalType] = useState<'verification' | 'rmn' | 'validate-rmn' | 'mother-tongue'>('verification');
   
   // Show verification modal when switching to 'rmn' (No & No Scenario) tab
   const handleTabChange = (tab: 'verification' | 'rmn') => {
@@ -23,14 +24,11 @@ const CallCenterPage: React.FC = () => {
   };
   
   const handleValidateClick = () => {
-    if (activeTab === 'rmn') {
-      // For No & No Scenario, show RMN validation popup
-      setModalType('validate-rmn');
-    } else {
-      // For Multiple Scenario, show regular verification popup
-      setModalType('verification');
-    }
     setIsModalOpen(true);
+  };
+  
+  const setModalTypeHandler = (type: 'verification' | 'rmn' | 'validate-rmn' | 'mother-tongue') => {
+    setModalType(type);
   };
   
   const closeModal = () => {
@@ -47,7 +45,8 @@ const CallCenterPage: React.FC = () => {
         <TabsNavigation activeTab={activeTab} onTabChange={handleTabChange}>
           <CallDetailsContent 
             activeTab={activeTab} 
-            onValidateClick={handleValidateClick} 
+            onValidateClick={handleValidateClick}
+            setModalType={setModalTypeHandler}
           />
         </TabsNavigation>
         
@@ -64,10 +63,15 @@ const CallCenterPage: React.FC = () => {
 const CallDetailsContent: React.FC<{ 
   activeTab: 'verification' | 'rmn'; 
   onValidateClick: () => void;
-}> = ({ activeTab, onValidateClick }) => {
+  setModalType: (type: 'verification' | 'rmn' | 'validate-rmn' | 'mother-tongue') => void;
+}> = ({ activeTab, onValidateClick, setModalType }) => {
   return (
     <>
-      <CallDetails onValidateClick={onValidateClick} activeTab={activeTab} />
+      <CallDetails 
+        onValidateClick={onValidateClick} 
+        activeTab={activeTab} 
+        modalType={setModalType} 
+      />
       <CallWrapUp />
       <CustomerDetails activeTab={activeTab} />
     </>
@@ -77,7 +81,9 @@ const CallDetailsContent: React.FC<{
 const Index: React.FC = () => {
   return (
     <CallValidationProvider>
-      <CallCenterPage />
+      <ProductSelectionProvider>
+        <CallCenterPage />
+      </ProductSelectionProvider>
     </CallValidationProvider>
   );
 };

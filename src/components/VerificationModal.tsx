@@ -11,7 +11,7 @@ import { useCallValidation } from '@/hooks/useCallValidation';
 interface VerificationModalProps {
   isOpen: boolean;
   onClose: () => void;
-  type: 'verification' | 'rmn' | 'validate-rmn';
+  type: 'verification' | 'rmn' | 'validate-rmn' | 'mother-tongue';
 }
 
 const VerificationModal: React.FC<VerificationModalProps> = ({ isOpen, onClose, type }) => {
@@ -26,6 +26,26 @@ const VerificationModal: React.FC<VerificationModalProps> = ({ isOpen, onClose, 
         title: 'RMN Validation Required',
         description: 'Please request customer to call from RMN.',
       });
+      onClose();
+      return;
+    }
+    
+    // For mother tongue verification
+    if (type === 'mother-tongue') {
+      if (selectedOption === 'marathi') {
+        toast({
+          title: 'Verification Successful',
+          description: 'Customer verification completed successfully.',
+        });
+        updateValidation('rmn', true);
+      } else {
+        toast({
+          title: 'Verification Failed',
+          description: 'The answer provided is incorrect.',
+          variant: 'destructive',
+        });
+        updateValidation('rmn', false);
+      }
       onClose();
       return;
     }
@@ -55,7 +75,8 @@ const VerificationModal: React.FC<VerificationModalProps> = ({ isOpen, onClose, 
         <DialogHeader>
           <div className="flex items-center justify-between">
             <DialogTitle className="text-xl">
-              {type === 'validate-rmn' ? 'RMN Validation' : 'Verification Engine'}
+              {type === 'validate-rmn' ? 'RMN Validation' : 
+               type === 'mother-tongue' ? 'Verification Question' : 'Verification Engine'}
             </DialogTitle>
             <Button variant="ghost" onClick={onClose} className="-mt-2">
               <X className="h-4 w-4" />
@@ -68,6 +89,31 @@ const VerificationModal: React.FC<VerificationModalProps> = ({ isOpen, onClose, 
             <h3 className="text-lg font-medium text-blue-700 mb-4">
               Please request customer to call from RMN.
             </h3>
+          ) : type === 'mother-tongue' ? (
+            <>
+              <h3 className="text-lg font-medium text-blue-700 mb-4">What is your mother tongue?</h3>
+              
+              <RadioGroup value={selectedOption || ''} onValueChange={setSelectedOption}>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="hindi" id="hindi" />
+                    <Label htmlFor="hindi">Hindi</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="marathi" id="marathi" />
+                    <Label htmlFor="marathi">Marathi</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="english" id="english" />
+                    <Label htmlFor="english">English</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="kannada" id="kannada" />
+                    <Label htmlFor="kannada">Kannada</Label>
+                  </div>
+                </div>
+              </RadioGroup>
+            </>
           ) : (
             <>
               <h3 className="text-lg font-medium text-blue-700 mb-4">What is the customer's maiden name?</h3>

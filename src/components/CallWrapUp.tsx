@@ -1,10 +1,15 @@
 
-import React, { useState } from 'react';
+import React from 'react';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
+import { useProductSelection, ProductType } from "@/hooks/useProductSelection";
 
 const CallWrapUp: React.FC = () => {
-  const [productOpen, setProductOpen] = useState(false);
+  const { selectedProduct, setSelectedProduct } = useProductSelection();
+  
+  const handleProductChange = (value: string) => {
+    setSelectedProduct(value as ProductType);
+  };
   
   return (
     <div className="bg-white p-6 border rounded-md mb-6">
@@ -15,7 +20,7 @@ const CallWrapUp: React.FC = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
         <div>
           <label className="font-medium block mb-2">Product</label>
-          <Select>
+          <Select value={selectedProduct} onValueChange={handleProductChange}>
             <SelectTrigger className="w-full">
               <SelectValue placeholder="Select Product" />
             </SelectTrigger>

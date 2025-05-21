@@ -3,19 +3,38 @@ import React, { useState } from 'react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { useCallValidation } from '@/hooks/useCallValidation';
+import { useProductSelection } from '@/hooks/useProductSelection';
 
 interface CallDetailsProps {
   onValidateClick: () => void;
   activeTab: 'verification' | 'rmn';
+  modalType: (type: 'verification' | 'rmn' | 'validate-rmn' | 'mother-tongue') => void;
 }
 
-const CallDetails: React.FC<CallDetailsProps> = ({ onValidateClick, activeTab }) => {
+const CallDetails: React.FC<CallDetailsProps> = ({ onValidateClick, activeTab, modalType }) => {
   const { validationState } = useCallValidation();
+  const { selectedProduct } = useProductSelection();
   const [rmnStatus, setRmnStatus] = useState('No');
   const [ivrStatus, setIvrStatus] = useState('Yes');
   
   // Get validation status based on active tab
   const validationStatus = activeTab === 'verification' ? 'Yes' : 'No';
+
+  const handleValidateClick = () => {
+    if (activeTab === 'rmn') {
+      // For No & No scenario, check product selection
+      const inquiryProducts = ['balance', 'transaction'];
+      if (selectedProduct && inquiryProducts.includes(selectedProduct)) {
+        modalType('mother-tongue');
+      } else {
+        modalType('validate-rmn');
+      }
+    } else {
+      // For Multiple scenario
+      modalType('verification');
+    }
+    onValidateClick();
+  };
   
   return (
     <div className="bg-white p-6 border rounded-md mb-6">
@@ -87,7 +106,7 @@ const CallDetails: React.FC<CallDetailsProps> = ({ onValidateClick, activeTab })
       
       <div className="mt-8 flex items-center justify-between">
         <div className="flex gap-4">
-          <Button onClick={onValidateClick} className="bg-section-header text-white hover:bg-blue-800">
+          <Button onClick={handleValidateClick} className="bg-section-header text-white hover:bg-blue-800">
             Validate
           </Button>
           <Button variant="outline" className="flex items-center gap-2">
