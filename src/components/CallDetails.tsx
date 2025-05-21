@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { useCallValidation } from '@/hooks/useCallValidation';
@@ -11,11 +11,13 @@ interface CallDetailsProps {
 
 const CallDetails: React.FC<CallDetailsProps> = ({ onValidateClick, activeTab }) => {
   const { validationState } = useCallValidation();
+  const [rmnStatus, setRmnStatus] = useState('No');
+  const [ivrStatus, setIvrStatus] = useState('Yes');
   
-  // Get status values based on active tab
-  const rmnStatus = activeTab === 'verification' ? 'Yes' : 'No';
-  const ivrStatus = 'Yes';
-  const validationStatus = activeTab === 'verification' ? 'Yes' : 'No';
+  // Get validation status based on active tab
+  const validationStatus = activeTab === 'verification' 
+    ? (validationState.verification ? 'Yes' : 'No')
+    : 'No';
   
   return (
     <div className="bg-white p-6 border rounded-md mb-6">
@@ -96,18 +98,38 @@ const CallDetails: React.FC<CallDetailsProps> = ({ onValidateClick, activeTab })
         </div>
         
         <div className="flex gap-8">
-          <div className="flex gap-2">
+          <div className="flex gap-2 items-center">
             <span className="font-medium">RMN Validation Status:</span>
-            <span className={rmnStatus === 'Yes' ? 'text-validation-yes font-semibold' : 'text-validation-no font-semibold'}>
-              {rmnStatus}
-            </span>
+            {activeTab === 'verification' ? (
+              <Select value={rmnStatus} onValueChange={setRmnStatus}>
+                <SelectTrigger className="w-[80px]">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Yes">Yes</SelectItem>
+                  <SelectItem value="No">No</SelectItem>
+                </SelectContent>
+              </Select>
+            ) : (
+              <span className="text-validation-no font-semibold">No</span>
+            )}
           </div>
           
-          <div className="flex gap-2">
+          <div className="flex gap-2 items-center">
             <span className="font-medium">IVR Validation Status:</span>
-            <span className="text-validation-yes font-semibold">
-              {ivrStatus}
-            </span>
+            {activeTab === 'verification' ? (
+              <Select value={ivrStatus} onValueChange={setIvrStatus}>
+                <SelectTrigger className="w-[80px]">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Yes">Yes</SelectItem>
+                  <SelectItem value="No">No</SelectItem>
+                </SelectContent>
+              </Select>
+            ) : (
+              <span className="text-validation-no font-semibold">No</span>
+            )}
           </div>
           
           <div className="flex gap-2">

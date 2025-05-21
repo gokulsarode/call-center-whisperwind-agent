@@ -16,8 +16,8 @@ const TabsNavigation: React.FC<TabsNavigationProps> = ({ activeTab, onTabChange,
       className="w-full"
     >
       <TabsList className="grid w-full grid-cols-2">
-        <TabsTrigger value="verification">Verification Flow</TabsTrigger>
-        <TabsTrigger value="rmn">RMN Validation</TabsTrigger>
+        <TabsTrigger value="verification">Multiple Scenario</TabsTrigger>
+        <TabsTrigger value="rmn">No & No Scenario</TabsTrigger>
       </TabsList>
       <TabsContent value={activeTab} className="mt-6">
         {children}

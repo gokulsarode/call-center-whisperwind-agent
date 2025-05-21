@@ -55,8 +55,8 @@ const CallDetailsContent: React.FC<{
   return (
     <>
       <CallDetails onValidateClick={onValidateClick} activeTab={activeTab} />
-      <CustomerDetails />
       <CallWrapUp />
+      <CustomerDetails />
     </>
   );
 };
